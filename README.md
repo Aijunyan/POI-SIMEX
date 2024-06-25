@@ -1,2 +1,2 @@
-# POI_SIMEX
+# POI-SIMEX
 Poisson SIMEX
