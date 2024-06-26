@@ -50,7 +50,7 @@ progStart=Sys.time()
 
 ##step 1 simulate data
 n<-50;
-N=1000;a=1;b=2;b0=2;b1=1;b2=0.5;sig.e=2
+N=100;a=1;b=2;b0=2;b1=1;b2=0.5;sig.e=2
 my.dat<-sim.lognormT(a,b,N, n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0.2)
 
 ##step 2 run the analysis
