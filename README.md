@@ -1,5 +1,6 @@
 # POI-SIMEX
 # POI-SIMEX_AFT.R is R code for correcting the measurement error for the conditionally Poisson distributed surrogates
+# POI-SIMEX_AFT.R is modified based on SIMEX.AFT package source code
 # Y--log survival time
 # X--error-prone covariate(s)
 # Z--covariate(s) without measurement error
