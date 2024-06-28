@@ -6,4 +6,4 @@
 # download the AFT_lognorm_Main.R and  POI_SIMEX_AFT.R to your preferred folder
 # You might need to modify the working path and output path in  AFT_lognorm_Main.R 
 # Check the required package
-# The model statement needs to be modified according the covariates included
+# The model statement needs to be modified according to the covariates included
