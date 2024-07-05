@@ -29,10 +29,10 @@ library(purrr);library(dplyr);library(plyr);library(stringr)
 * Block 2--Run Naive method and POI-SIMEX method
 * Block 3--Save the output
 
-## Author
+## Authors
 
-Aijun Yang (aijunyan@uvic.ca
-
+Aijun Yang (aijunyan@uvic.ca)
+Phineas T. Hamilton, Brad H. Nelson, Julian J. Lum Mary Lesperance, Farouk S. Nathoo
 ## Version History
 
 * 0.1
