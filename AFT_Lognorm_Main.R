@@ -66,8 +66,8 @@ naive.est<-c(); simex.est<-c()
     simex.est<-cbind(para=row.names(simex0),simex0)
 
 ##save the result
-write.csv(naive.est,row.names=F,file="./output/naive.est.csv")
-write.csv(simex.est,row.names=F,file="./output/simex.est.csv")
+write.csv(naive.est,row.names=F,file="./naive.est.csv")
+write.csv(simex.est,row.names=F,file="./simex.est.csv")
 
 progEnd=Sys.time()-progStart
 
