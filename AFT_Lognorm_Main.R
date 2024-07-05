@@ -6,7 +6,7 @@
 library(tidyverse);library(survival);library(survivalAnalysis);library(SurvRegCensCov)
 library(purrr);library(dplyr);library(plyr);library(stringr)
 
-setwd("C:/Users/workingDir")
+setwd("~")
 source("./POI_SIMEX_AFT.R")
 
 sim.lognormT<-function(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
