@@ -31,7 +31,7 @@ sim.lognormT<-function(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
     delta<- rep(1, n) #event indicator
     delta[sample(n, rcensor*n)] <- 0 # random censorship
     
-    simdata<-data.frame(simseq=i,Y=Y,Z=Z,lambda=lambda,lambda.naive=lambda.naive,A=A,delta=delta)
+    simdata<-data.frame(Y=Y,Z=Z,lambda=lambda,lambda.naive=lambda.naive,A=A,delta=delta)
   return (simdata)
 }
 
