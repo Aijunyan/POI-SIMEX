@@ -16,7 +16,7 @@ library(purrr);library(dplyr);library(plyr);library(stringr)
 
 *  Download or copy the R programs  POI-SIMEX_AFT.R and AFT_Lognorm_Main. R
 *  Modification of the working directory dependoning where the R codes are saved in AFT_Lognorm_Main.R and POI_SIMEX_AFT.R
-*  setwd("C:/Users/workingDir")
+*  setwd("~")
 *  source("./POI_SIMEX_AFT.R")
 *  modify the output path if needed
 * Write.csv(naive.est,row.names=F,file="./naive.est.csv")
