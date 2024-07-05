@@ -72,12 +72,9 @@ quadraticextrapolation <-
   }
 
 POI.simexaft <-
-  function(formula=formula(data),data=parent.frame(),SIMEXvariable,areaVariable,repind=list(),B=50,lambda=seq(0,2,0.1),extrapolation="quadratic",dist="weibull")
+  function(formula=formula(data),data=parent.frame(),SIMEXvariable,areaVariable,repind=list(),B=50,lambda=seq(0,2,0.1),extrapolation="quadratic",dist="lognormal")
   {
-    #for debug
-    #data=bio_surv_fm;SIMEXvariable="bio";areaVariable="area";repind=list();B=50;lambda=seq(0,2,0.1);extrapolation="quad";dist="lognormal";
-    
- 
+
     ############################ check the input of SIMEXvariable #######################################
     colname=colnames(data)
     SIMEXvariable=unique(SIMEXvariable)
