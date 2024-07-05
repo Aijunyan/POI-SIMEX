@@ -23,8 +23,8 @@ sim.lognormT<-function(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
   
     lambda<-rgamma(n,shape=a,scale=b)  #rate=1/scale
     
-    W<- rpois(n, lambda*L) #generate Poissons, mis-measured covariate
-    lambda.naive<-W/L
+    W<- rpois(n, lambda*A) #generate Poissons, mis-measured covariate
+    lambda.naive<-W/A
     
     log.Y<-b0+b1*lambda+b2*Z+sig.e*rnorm(n)  ##set standard normal dist rnorm(0,1)
     Y<-exp(log.Y)
