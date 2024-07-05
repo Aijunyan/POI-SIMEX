@@ -3,7 +3,7 @@
 ##In the real application, model statement needs to be modified accordingly
 ###
 
-library(tidyverse);library(survival);library(survivalAnalysis)
+library(tidyverse);library(survival);library(survivalAnalysis);library(SurvRegCensCov)
 library(purrr);library(dplyr);library(plyr);library(stringr)
 
 setwd("C:/Users/workingDir")
