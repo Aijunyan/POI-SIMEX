@@ -3,24 +3,17 @@
 ##In the real application, model statement needs to be modified accordingly
 ###
 
-library(tidyverse)
-library(survival)
-library(survivalAnalysis)
-library(purrr)
-library(dplyr);library(plyr);
-library(simexaft)
-library(stringr)
-library(SurvRegCensCov)
+library(tidyverse);library(survival);library(survivalAnalysis)
+library(purrr);library(dplyr);library(plyr);library(stringr)
 
 setwd("C:/Users/workingDir")
 source("./POI_SIMEX_AFT.R")
 
-sim.lognormT<-function(a,b,N, n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
-  #case=1;N=1;n=100;unif.a0=0.5;unif.b0=9;sig.e=2;seed=12345;rcensor=0;b0=2;b1=1;b2=0.5;
+sim.lognormT<-function(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
   set.seed(seed)
   simdata<-c()
   #area in POI process--set to 1 for simplicity
-  L<-rep(1,n)
+  A<-rep(1,n)
   ##covariate without ME
   Z<-runif(n,unif.a0,unif.b0)
   
@@ -28,8 +21,6 @@ sim.lognormT<-function(a,b,N, n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
   
   lambda<-rgamma(n,a,b)
   
-  for(i in 1:N){
-    #i=1
     lambda<-rgamma(n,shape=a,scale=b)  #rate=1/scale
     
     W<- rpois(n, lambda*L) #generate Poissons, mis-measured covariate
@@ -40,10 +31,7 @@ sim.lognormT<-function(a,b,N, n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
     delta<- rep(1, n) #event indicator
     delta[sample(n, rcensor*n)] <- 0 # random censorship
     
-    mydata<-data.frame(simseq=i,Y=Y,Z=Z,lambda=lambda,lambda.naive=lambda.naive,L=L,delta=delta)
-    
-    simdata<-rbind(simdata,mydata)
-  }
+    simdata<-data.frame(simseq=i,Y=Y,Z=Z,lambda=lambda,lambda.naive=lambda.naive,A=A,delta=delta)
   return (simdata)
 }
 
@@ -51,17 +39,15 @@ sim.lognormT<-function(a,b,N, n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
 progStart=Sys.time()
 
 ##step 1 simulate one data and with sample n=50
-n<-50;N<-1
+n<-50;
 a=1;b=2;b0=2;b1=1;b2=0.5;sig.e=2
 
-my.dat<-sim.lognormT(a,b,N, n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0.2)
+mydata<-sim.lognormT(a,b,N, n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0.2)
 
 ##step 2 run the analysis
 
 naive.est<-c(); simex.est<-c()
 
-    mydata<-my.dat
-  
     ##naive fit
 
     formula<-Surv(Y,delta) ~ lambda.naive + Z
@@ -73,7 +59,7 @@ naive.est<-c(); simex.est<-c()
     
     ##simex correction
     
-    simexaft.est<-POI.simexaft(formula=formula,data=mydata,SIMEXvariable="lambda.naive",areaVariable="L",repind=list(),B=200,lambda=seq(0,2,0.1),extrapolation="quadratic",dist="lognormal")
+    simexaft.est<-POI.simexaft(formula=formula,data=mydata,SIMEXvariable="lambda.naive",areaVariable="A",repind=list(),B=200,lambda=seq(0,2,0.1),extrapolation="quadratic",dist="lognormal")
     simex0<-cbind(simexaft.est[1]$coefficients,simexaft.est[2]$se,simexaft.est[3]$scalereg,
                   simexaft.est[4]$pvalue)
     colnames(simex0)<-c("coef","se","scale","pvalue")
