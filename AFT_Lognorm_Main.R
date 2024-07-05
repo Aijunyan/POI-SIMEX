@@ -3,8 +3,11 @@
 ##In the real application, model statement needs to be modified accordingly
 ###
 
-library(tidyverse);library(survival);library(survivalAnalysis);library(SurvRegCensCov)
-library(purrr);library(dplyr);library(plyr);library(stringr)
+#library(tidyverse);library(survival);library(survivalAnalysis);library(SurvRegCensCov)
+#library(purrr);library(dplyr);library(plyr);library(stringr)
+list.of.packages <- c("tidyverse", "survival","survivalAnalysis","SurvRegCensCov","purrr","dplyr","plyr","stringr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
 
 setwd("~")
 source("./POI_SIMEX_AFT.R")
