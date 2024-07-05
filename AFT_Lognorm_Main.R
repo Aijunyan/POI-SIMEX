@@ -68,7 +68,7 @@ naive.est<-c(); simex.est<-c()
     colnames(simex0)<-c("coef","se","scale","pvalue")
     simex.est<-cbind(para=row.names(simex0),simex0)
 
-##save the result
+##Step 3 save the result
 write.csv(naive.est,row.names=F,file="./naive.est.csv")
 write.csv(simex.est,row.names=F,file="./simex.est.csv")
 
