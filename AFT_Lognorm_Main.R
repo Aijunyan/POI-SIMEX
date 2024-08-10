@@ -13,6 +13,12 @@ setwd("~")
 source("./POI_SIMEX_AFT.R")
 
 sim.lognormT<-function(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
+  # Arguments
+  # a, b are gamma shape and scale parameters to simulate true covariate X
+  # n, the number of observations
+  # unif.a0, unif.b0 are two parameters of uniform distribution to simulate Z covariate
+  # seed: randome seed
+  # rcensor: % of censoring, values from 0 to 1
   set.seed(seed)
   simdata<-c()
   #area in POI process--set to 1 for simplicity
@@ -53,18 +59,21 @@ naive.est<-c(); simex.est<-c()
 
     ##naive fit
 
-    formula<-Surv(Y,delta) ~ lambda.naive + Z
+    my.formula<-Surv(Y,delta) ~ lambda.naive + Z
     
-    naive.fit = survreg(formula=formula,data=mydata,dist='lognormal',robust=T)
+    naive.fit = survreg(formula=my.formula,data=mydata,dist='lognormal',robust=T)
     naive.est0<-summary(naive.fit)$table
     para<-row.names(naive.est0)
     naive.est<-cbind(naive.est0,para)
     
     ##simex correction
     
-    simexaft.est<-POI.simexaft(formula=formula,data=mydata,SIMEXvariable="lambda.naive",areaVariable="A",repind=list(),B=200,lambda=seq(0,2,0.1),extrapolation="quadratic",dist="lognormal")
+    simexaft.est<-POI.simexaft(formula=my.formula,data=mydata,SIMEXvariable="lambda.naive",areaVariable="A",repind=list(),B=200,
+                               lambda=seq(0,2,0.1),extrapolation="quadratic",dist="lognormal")
+
     simex0<-cbind(simexaft.est[1]$coefficients,simexaft.est[2]$se,simexaft.est[3]$scalereg,
                   simexaft.est[4]$pvalue)
+
     colnames(simex0)<-c("coef","se","scale","pvalue")
     simex.est<-cbind(para=row.names(simex0),simex0)
 
