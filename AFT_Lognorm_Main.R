@@ -59,7 +59,7 @@ mydata<-sim.lognormT(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0.2)
     true.est<-c()
     my.formula<-Surv(Y,delta) ~ lambda + Z
     true.fit = survreg(formula=my.formula,data=mydata,dist='lognormal',robust=T)
-    true.est0<-summary(naive.fit)$table
+    true.est0<-summary(true.fit)$table
     para<-row.names(true.est0)
     true.est<-cbind(true.est0,para)
   
