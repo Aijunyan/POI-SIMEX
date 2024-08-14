@@ -75,7 +75,7 @@ mydata<-sim.lognormT(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0.2)
    
     ##simex correction
     simex.est<-c()
-    simexaft.est<-POI.simexaft(formula=my.formula,data=mydata,SIMEXvariable="lambda.naive",areaVariable="A",repind=list(),B=200,
+    simexaft.est<-POI.simexaft(formula=my.formula,data=mydata,SIMEXvariable="lambda.naive",areaVariable="A",B=200,
                                lambda=seq(0,2,0.1),extrapolation="quadratic",dist="lognormal")
 
     simex0<-cbind(simexaft.est[1]$coefficients,simexaft.est[2]$se,simexaft.est[3]$scalereg,
