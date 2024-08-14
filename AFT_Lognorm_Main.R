@@ -2,9 +2,8 @@
 ##Demonstrate the application of POI-SIMEX method using the simulated data
 ##In the real application, model statement needs to be modified accordingly
 ###
+##install required packages
 
-#library(tidyverse);library(survival);library(survivalAnalysis);library(SurvRegCensCov)
-#library(purrr);library(dplyr);library(plyr);library(stringr)
 list.of.packages <- c("tidyverse", "survival","survivalAnalysis","SurvRegCensCov","purrr","dplyr","plyr","stringr")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
@@ -14,11 +13,12 @@ source("./POI_SIMEX_AFT.R")
 
 sim.lognormT<-function(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
   # Arguments
-  # a, b are gamma shape and scale parameters to simulate true covariate X
-  # n, the number of observations
-  # unif.a0, unif.b0 are two parameters of uniform distribution to simulate Z covariate
-  # seed: randome seed
-  # rcensor: % of censoring, values from 0 to 1
+  # @para a, b are gamma shape and scale parameters to simulate true covariate X
+  # @para n, the number of observations
+  # @para unif.a0, unif.b0 are two parameters of uniform distribution to simulate Z covariate
+  # @para seed: randome seed
+  # @para rcensor: % of censoring, values from 0 to 1
+  
   set.seed(seed)
   simdata<-c()
   #area in POI process--set to 1 for simplicity
@@ -55,19 +55,26 @@ mydata<-sim.lognormT(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0.2)
 
 ##step 2 run the analysis
 
-naive.est<-c(); simex.est<-c()
-
+    ##for simulated data, fit true value
+    true.est<-c()
+    my.formula<-Surv(Y,delta) ~ lambda + Z
+    true.fit = survreg(formula=my.formula,data=mydata,dist='lognormal',robust=T)
+    true.est0<-summary(naive.fit)$table
+    para<-row.names(true.est0)
+    true.est<-cbind(true.est0,para)
+  
     ##naive fit
-
+    naive.est<-c()
     my.formula<-Surv(Y,delta) ~ lambda.naive + Z
     
     naive.fit = survreg(formula=my.formula,data=mydata,dist='lognormal',robust=T)
     naive.est0<-summary(naive.fit)$table
     para<-row.names(naive.est0)
     naive.est<-cbind(naive.est0,para)
-    
+
+   
     ##simex correction
-    
+    simex.est<-c()
     simexaft.est<-POI.simexaft(formula=my.formula,data=mydata,SIMEXvariable="lambda.naive",areaVariable="A",repind=list(),B=200,
                                lambda=seq(0,2,0.1),extrapolation="quadratic",dist="lognormal")
 
@@ -78,6 +85,8 @@ naive.est<-c(); simex.est<-c()
     simex.est<-cbind(para=row.names(simex0),simex0)
 
 ##Step 3 save the result
+##if true.est exist
+write.csv(true.est, row.names=F,file="./true.est.csv")
 write.csv(naive.est,row.names=F,file="./naive.est.csv")
 write.csv(simex.est,row.names=F,file="./simex.est.csv")
 
