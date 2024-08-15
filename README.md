@@ -3,7 +3,7 @@
 POI-SIMEX for correcting measurement error in the conditionally Poisson Distributed Biomarkers from tissue microarrays
 
 ## Description
-Motivated by cancer studies where biomarkers obtained from a tissue microarray subsampled from a large toumer tissue, we need to correct the bias in the regressio n coefficent estimation when using observed cell densities as surrogates for the true tissue cell densities. We extend SIMEX to the conditional Poisson case (POI-SIMEX) where measurement errors are non-Gaussian with heteroscedastic variance.
+Motivated by cancer studies where biomarkers obtained from a tissue microarray subsampled from a large toumer tissue, we need to correct the bias in the regression coefficent estimation when using observed cell densities as surrogates for the true tissue cell densities. We extend SIMEX to the conditional Poisson case (POI-SIMEX) where measurement errors are non-Gaussian with heteroscedastic variance.
 
 ## Getting Started
 
@@ -19,6 +19,7 @@ library(purrr);library(dplyr);library(plyr);library(stringr)
 *  setwd("~")
 *  source("./POI_SIMEX_AFT.R")
 *  modify the output path if needed
+* Write.csv(true.est,row.names=F,file="./true.est.csv")
 * Write.csv(naive.est,row.names=F,file="./naive.est.csv")
 * write.csv(simex.est,row.names=F,file="./simex.est.csv")
 
@@ -26,8 +27,8 @@ library(purrr);library(dplyr);library(plyr);library(stringr)
 
 * After the modification, the program can run by block
 * Block 1--Simulate the data (or use real data, real data needs to modify the model statment)
-* Block 2--Run Naive method and POI-SIMEX method
-* Block 3--Save the output
+* Block 2--Run the models using true value for simulated data, naive method, and POI-SIMEX method
+* Block 3--Save the outputs
 
 ## Authors
 
