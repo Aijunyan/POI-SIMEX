@@ -33,6 +33,8 @@ library(purrr);library(dplyr);library(plyr);library(stringr)
 
 Aijun Yang (aijunyan@uvic.ca)
 Phineas T. Hamilton, Brad H. Nelson, Julian J. Lum Mary Lesperance, Farouk S. Nathoo
+## Reference
+POI-SIMEX for Conditionally Poisson Distributed Biomarkers from Tissue Microarrays
 ## Version History
 
 * 0.1
