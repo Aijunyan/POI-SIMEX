@@ -18,6 +18,7 @@ sim.lognormT<-function(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
   # @para unif.a0, unif.b0 are two parameters of uniform distribution to simulate Z covariate
   # @para seed: randome seed
   # @para rcensor: % of censoring, values from 0 to 1
+  # output dataset simdata
   
   set.seed(seed)
   simdata<-c()
