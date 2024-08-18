@@ -1,7 +1,8 @@
 
 linearextrapolation <-
   function(A1,A2,A3,lambda){
-    
+    # @para A1,A2,A3 are the outputs for estimation of coefficients, variance, and scale
+    # @lambda, the grid of lambda values
     #the fitted value of linear extrapolation at lambda=-1#
     reg1<-numeric()
     
@@ -37,6 +38,8 @@ linearextrapolation <-
 
 quadraticextrapolation <-
   function(A1,A2,A3,lambda){
+    # @para A1,A2,A3 are the outputs for estimation of coefficients, variance, and scale
+    # @lambda, the grid of lambda values
     #the fitted value of quadratic extrapolation at lambda=-1#
     reg1<-numeric()
     
