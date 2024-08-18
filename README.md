@@ -27,7 +27,7 @@ library(purrr);library(dplyr);library(plyr);library(stringr)
 
 * After the modification, the program can run by block
 * Block 1--Simulate the data (or use real data, real data needs to modify the model statment)
-* Block 2--Run the models using true value for simulated data, naive method, and POI-SIMEX method
+* Block 2--Run the models: using true value (if data is simulated), using observed value for naive method, and POI-SIMEX method
 * Block 3--Save the outputs
 
 ## Authors
