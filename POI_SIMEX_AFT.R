@@ -264,7 +264,7 @@ POI.simexaft <-
     scalereg<-result1$scalereg
     pvalue<-2*(1-pnorm(abs(estimate/se)))
     
-    erg<-list(coefficients=estimate,se=se,scalereg=scalereg,pvalue=pvalue,lambda=lambda, B=B, formula=formula, extrapolation=extrapolation,SIMEXvariable=SIMEXvariable,repind=repind,theta=theta.all)
+    erg<-list(coefficients=estimate,se=se,scalereg=scalereg,pvalue=pvalue,lambda=lambda, B=B, formula=formula, extrapolation=extrapolation,SIMEXvariable=SIMEXvariable,theta=theta.all)
       
     return(erg)
     
