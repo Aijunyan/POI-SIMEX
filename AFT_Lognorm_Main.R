@@ -11,6 +11,8 @@ if(length(new.packages)) install.packages(new.packages)
 setwd("~")
 source("./POI_SIMEX_AFT.R")
 
+lapply(list.of.packages, require, character.only = TRUE)
+
 sim.lognormT<-function(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
   # Arguments
   # @para a, b are gamma shape and scale parameters to simulate true covariate X
