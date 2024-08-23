@@ -1,15 +1,71 @@
+# Functions used to simulate and fit an Accelerated Failure time (AFT) model using
+#  the POI_SIMEX method.  The package 'simexaft' functions were modified for the
+#  conditional Poisson distributed covariates.
+
+# REFERENCE:   Xiong J, He W, Yi GY (2019). simexaft: R package version 1.0.7.1,
+#    <https://CRAN.R-project.org/package=simexaft>.
+
+# REFERENCE:  "POI-SIMEX for conditionally 
+#    Poisson distributed biomarkers from tissue microarrays" (2024)
+#    Aijun Yang (aijunyan@uvic.ca), Phineas T. Hamilton, Brad H. Nelson, Julian J. Lum, 
+#    Mary Lesperance, Farouk S. Nathoo
+
+sim.lognormT<-function(a,b,n,unif.a0=0.5,unif.b0=9,seed=12345,rcensor=0){
+ # Simulate data from log-normal AFT model with:
+  #   intercept b0; one covariate measured without error, Z~unif(unif.a0, unif.b0), with coef b2;
+  #   one covariate measured with error ~ Poisson(true mean = lambda*A) with coef b1, 
+  #    with lambda~gamma(shape=a, scale=b), and A = area.
+  #   The random normal component has standard deviation sig.e.
+  # Arguments
+  # a, b are gamma shape and scale parameters of distribution for true covariate, lambda
+  # n, the number of observations
+  # b0, b1, b2 are the model coefficients
+  # sig.e is standard deviation of random normal
+  # unif.a0, unif.b0 are two parameters, Z~unif(unif.a0, unif.b0)
+  # seed: random seed
+  # rcensor: % of censoring, values in [0, 1)
+  # output dataframe: simdata, 
+  
+  set.seed(seed)
+  simdata<-c()
+  #area in POI process--set to 1 for simplicity
+  A<-rep(1,n)
+  ##covariate without ME
+  Z<-runif(n,unif.a0,unif.b0)
+  
+  ##a=gamma shape b=gamma scale
+  
+  lambda<-rgamma(n,shape=a,scale=b)  #rate=1/scale
+    
+    W<- rpois(n, lambda*A) #generate Poissons, mis-measured covariate
+    lambda.naive<-W/A
+    
+    log.Y<-b0+b1*lambda+b2*Z+sig.e*rnorm(n)  ##set standard normal dist rnorm(0,1)
+    Y<-exp(log.Y)
+    delta<- rep(1, n) #event indicator
+    delta[sample(n, rcensor*n)] <- 0 # random censorship
+    
+    simdata<-data.frame(Y=Y,Z=Z,lambda=lambda,lambda.naive=lambda.naive,A=A,delta=delta)
+  return (simdata)
+}
+
+# REFERENCE:   Xiong J, He W, Yi GY (2019). simexaft: R package version 1.0.7.1,
+#    <https://CRAN.R-project.org/package=simexaft>.
 
 linearextrapolation <-
   function(A1,A2,A3,lambda){
-    # @para A1,A2,A3 are the outputs for estimation of coefficients, variance, and scale
-    # @lambda, the grid of lambda values
-    #the fitted value of linear extrapolation at lambda=-1#
+   # A1 estimates obtained from each level of labmda.
+   # A2 variances estimates obtained from each level of lambda.
+   # A3 scale estimates obtained from each level of lambda.
+   # lambda vector of lambdas, the grids for the extrapolation step.
+    
+    #extrapolation back to lambda=-1 yield the SIMEX estimates
     reg1<-numeric()
     
-    #the fitted value of linear extrapolation on diff at lambda=-1#
+    #extrapolation back to lambda=-1 yield the SIMEX estimates of variances
     reg2<-numeric() 
     
-    #the fitted value of linear extrapolation on scale at lambda=-1#
+    #extrapolation back to lambda=-1 yield the SIMEX estimates of scale
     scalereg<-numeric()
     
     D<-ncol(A1)                         
@@ -38,15 +94,18 @@ linearextrapolation <-
 
 quadraticextrapolation <-
   function(A1,A2,A3,lambda){
-    # @para A1,A2,A3 are the outputs for estimation of coefficients, variance, and scale
-    # @lambda, the grid of lambda values
-    #the fitted value of quadratic extrapolation at lambda=-1#
+   # A1 estimates obtained from each level of labmda.
+   # A2 variances estimates obtained from each level of lambda.
+   # A3 scale estimates obtained from each level of lambda.
+   # lambda vector of lambdas, the grids for the extrapolation step.
+    
+    #extrapolation back to lambda=-1 yield the SIMEX estimates
     reg1<-numeric()
     
-    #the fitted value of quadratic extrapolation on diff at lambda=-1#
+    #extrapolation back to lambda=-1 yield the SIMEX estimates of variances
     reg2<-numeric() 
     
-    #the fitted value of quadratic extrapolation on scale at lambda=-1#
+    #extrapolation back to lambda=-1 yield the SIMEX estimates of scale
     scalereg<-numeric()
     
     D<-ncol(A1)
@@ -77,14 +136,14 @@ quadraticextrapolation <-
 POI.simexaft <-
   function(formula=formula(data),data=parent.frame(),SIMEXvariable,areaVariable,B=50,lambda=seq(0,2,0.1),extrapolation="quadratic",dist="lognormal")
   {
-   # @para formula --the model used to fit the observed covariate with measurement error
-   # @para data --input data, must be in data.frame format
-   # @para SIMEXvariable, covariate with measurement error and need SIMEX for bias correction
-   # @para areaVariable,  area or length corresponding to the conditional Poisson distributed covariate
-   # @para B, the number of simulated data containing additional measurement error for each lambda value
-   # @para lambda, grid of values in POI-SIMEX simulation step
-   # @para extrapolation, indicating extrapolation method, linear or quadratic
-   # @para dist, distribution used in AFT model, current implmentation is only for lognormal
+   # formula --the model used to fit the observed covariate with measurement error
+   # data --input data, must be in data.frame format
+   # SIMEXvariable, covariate with measurement error and need SIMEX for bias correction
+   # areaVariable,  area or length corresponding to the conditional Poisson distributed covariate
+   # B, the number of simulated data containing additional measurement error for each lambda value
+   # lambda, grid of values in POI-SIMEX simulation step
+   # extrapolation, indicating extrapolation method, linear or quadratic
+   # dist, distribution used in AFT model, current implmentation is only for lognormal
     
     ############################ check the input of SIMEXvariable #######################################
     colname<-colnames(data)
@@ -139,6 +198,9 @@ POI.simexaft <-
     
     
     ndata<-nrow(data)
+
+    # nformula=length(attr(terms(formula),"term.labels"))+1
+    # update the above code for the covariate having more than 2 levels
     
     ###fit the naive model
     ncoef<-survreg(formula=formula,data=data,dist=dist,robust=T)$coefficients
@@ -146,7 +208,7 @@ POI.simexaft <-
     
     nlambda=length(lambda)
     
-    #the matrixes to save the estimates of the coefficents, variance #
+    #the matrixes to save the estimates of the coefficients, variance #
     A1<-matrix(data=NA,nlambda,nformula)
     
     A2<-matrix(data=NA,nlambda,nformula)
@@ -171,7 +233,7 @@ POI.simexaft <-
       ## the coefficients estimates of the kth sample##
       w<-numeric()
       
-      ##the variance of the coefficent estimate of the kth sample##
+      ##the variance of the coefficient estimate of the kth sample##
       v<-numeric()
       
       ##the variance estimate of the kth sample##
@@ -263,9 +325,10 @@ POI.simexaft <-
     names(se)<-p.names
     scalereg<-result1$scalereg
     pvalue<-2*(1-pnorm(abs(estimate/se)))
-    
+
+    ##drop repind=repind in the output list as just for one replicate
     erg<-list(coefficients=estimate,se=se,scalereg=scalereg,pvalue=pvalue,lambda=lambda, B=B, formula=formula, extrapolation=extrapolation,SIMEXvariable=SIMEXvariable,theta=theta.all)
-      
+
     return(erg)
     
   }
