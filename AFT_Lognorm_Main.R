@@ -14,9 +14,11 @@ new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only = TRUE) #load the packages
 
-setwd("~")
+# Get the path of the current R file
+current_file_path <- dirname(rstudioapi::getActiveDocumentContext()$path)
+ # Set the working directory to the directory of the current file
+setwd(current_file_path)
 source("./POI_SIMEX_AFT.R")
-
 
 progStart=Sys.time()
 
