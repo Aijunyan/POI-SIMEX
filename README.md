@@ -3,7 +3,7 @@
 POI-SIMEX for conditionally Poisson distributed biomarkers from tissue microarrays
 
 ## Description
-Motivated by cancer studies where biomarkers obtained from a tissue microarray subsampled from a large tumer tissue, we need to correct the bias in the regression coefficient estimation when using observed cell densities as surrogates for the true tissue cell densities. We extend SIMEX to the conditional Poisson case (POI-SIMEX) where measurement errors are non-Gaussian with heteroscedastic variance.
+Motivated by cancer studies where biomarkers obtained from a tissue microarray subsampled from a large tumor tissue, we need to correct the bias in the regression coefficient estimation when using observed cell densities as surrogates for the true tissue cell densities. We extend SIMEX to the conditional Poisson case (POI-SIMEX) where measurement errors are non-Gaussian with heteroscedastic variance.
 
 ## Getting Started
 
@@ -15,9 +15,10 @@ plyr, dplyr, stringr
 
 *  Download or copy the R programs  POI-SIMEX_AFT.R and AFT_Lognorm_Main. R
 *  Modify the working directory depending on where the two R files are saved:
-*  setwd("~")
-*  source("./POI_SIMEX_AFT.R")
-*  modify the output path if needed
+* current_file_path <- dirname(rstudioapi::getActiveDocumentContext()$path)
+* setwd(current_file_path)
+* source("./POI_SIMEX_AFT.R")
+* modify the output path if needed
 * Write.csv(true.est,row.names=F,file="./true.est.csv")
 * Write.csv(naive.est,row.names=F,file="./naive.est.csv")
 * write.csv(simex.est,row.names=F,file="./simex.est.csv")
