@@ -18,6 +18,10 @@ lapply(list.of.packages, require, character.only = TRUE) #load the packages
 current_file_path <- dirname(rstudioapi::getActiveDocumentContext()$path)
  # Set the working directory to the directory of the current file
 setwd(current_file_path)
+
+# if it is not working, simply hard code the path where the two R files are saved
+# setwd("path_two_R_files_saved")
+
 source("./POI_SIMEX_AFT.R")
 
 progStart=Sys.time()
