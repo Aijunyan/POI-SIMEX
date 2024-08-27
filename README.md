@@ -9,8 +9,8 @@ Motivated by cancer studies where biomarkers obtained from a tissue microarray s
 
 ### Dependencies
 
-* R libraries: tidyverse, survival, survivalAnalysis, SurvRegCensCov, purrr, 
-plyr, dplyr, stringr
+* R libraries: survival, survivalAnalysis, SurvRegCensCov
+  
 ### Installing
 
 *  Download or copy the R programs  POI-SIMEX_AFT.R and AFT_Lognorm_Main. R
